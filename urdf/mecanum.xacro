@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+
+<robot name="mecanum" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- include gazebo plugins -->
+  <xacro:include filename="$(find mecanum_sim)/urdf/mecanum.gazebo" />
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<!--                           LINKS                                      -->
+<!--          "distinct parts of the thing that you're making"            -->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~ ~ ROBOT BASE ~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+  <!-- Make a box for robot base thingie -->
+  <link name="base_link">
+
+  	<!-- Draw imaginary box around the robot for collision detection -->
+    <collision>
+      <origin xyz="0 0 0.0" rpy="0 0 0"/>
+      <geometry>
+       <box size="0.6 0.5 0.1"/>
+      </geometry>
+    </collision>
+
+    <!-- Describe how to draw the box in 3d -->
+    <visual>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <geometry>
+	<box size="0.6 0.5 0.1"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-3" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <link name="fl_link">
+      <visual>
+        <geometry>
+          <cylinder length="0.05" radius="0.1"/>
+        </geometry>
+        <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <cylinder length="0.05" radius="0.1"/>
+        </geometry>
+        <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+      </collision>
+
+      <inertial>
+        <mass value="0.1" />
+        <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+      </inertial>
+    </link>
+
+    <link name="fr_link">
+        <visual>
+          <geometry>
+            <cylinder length="0.05" radius="0.1"/>
+          </geometry>
+          <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+        </visual>
+
+        <collision>
+          <geometry>
+            <cylinder length="0.05" radius="0.1"/>
+          </geometry>
+          <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+        </collision>
+
+        <inertial>
+          <mass value="0.1" />
+          <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+          <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+        </inertial>
+      </link>
+      <link name="bl_link">
+          <visual>
+            <geometry>
+              <cylinder length="0.05" radius="0.1"/>
+            </geometry>
+            <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+          </visual>
+
+          <collision>
+            <geometry>
+              <cylinder length="0.05" radius="0.1"/>
+            </geometry>
+            <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+          </collision>
+
+          <inertial>
+            <mass value="0.1" />
+            <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+            <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+          </inertial>
+        </link>
+
+        <link name="br_link">
+            <visual>
+              <geometry>
+                <cylinder length="0.05" radius="0.1"/>
+              </geometry>
+              <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+            </visual>
+
+            <collision>
+              <geometry>
+                <cylinder length="0.05" radius="0.1"/>
+              </geometry>
+              <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+            </collision>
+
+            <inertial>
+              <mass value="0.1" />
+              <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+              <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+            </inertial>
+          </link>
+
+
+  <!--~~~~~~~~~~~~~~~~~~~~~~~ ~ Lidar ~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+  <link name="laser_link">
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+       <box size="0.05 0.05 0.04"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	       <box size="0.05 0.05 0.04"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-4" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<!--                           JOINTS                                     -->
+<!--            "connections between the distinct parts"                  -->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+  <!-- Connect the robot to the forward facing camera -->
+  <joint name="joint1" type="fixed">      <!-- Fused connection? (using continuous tilts view)-->
+    <parent link="base_link"/>            <!--      robot link = parent     -->
+    <child link="laser_link"/>     <!-- forward camera link = child  -->
+    <origin xyz="0.25 0 0.18" rpy="0 0 0"/>   <!-- where child is relative to parent -->
+    <axis xyz="0 0 0"/>                   <!-- ...describes the axis of rotation? -->
+  </joint>
+
+  <joint name="fl_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="fl_link"/>
+      <origin rpy="0 0 0" xyz="0.3 0.25 0.1"/>
+      <axis xyz="0 0 0"/>
+      <!-- <dynamics damping="1.0" friction="0.0" spring_stiffness="1" /> -->
+  </joint>
+
+  <joint name="fr_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="fr_link"/>
+      <origin rpy="0 0 0" xyz="0.3 -0.25 0.1"/>
+      <axis xyz="0 0 0"/>
+      <!-- <dynamics damping="1.0" friction="0.0" spring_stiffness="1" /> -->
+  </joint>
+
+  <joint name="bl_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="bl_link"/>
+      <origin rpy="0 0 0" xyz="-0.3 0.25 0.1"/>
+      <axis xyz="0 0 0"/>
+      <!-- <dynamics damping="1.0" friction="0.0" spring_stiffness="1" /> -->
+  </joint>
+
+  <joint name="br_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="br_link"/>
+      <origin rpy="0 0 0" xyz="-0.3 -0.25 0.1"/>
+      <axis xyz="0 0 0"/>
+      <!-- <dynamics damping="1.0" friction="0.0" spring_stiffness="1" /> -->
+  </joint>
+
+
+
+</robot>

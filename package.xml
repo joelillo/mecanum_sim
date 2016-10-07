@@ -1,0 +1,13 @@
+<package>
+  <name>mecanum_sim</name>
+  <version>0.0.0</version>
+  <description>Simple mecanum robot simulation</description>
+  <maintainer email="joelillo113@gmail.com">Joe Lillo</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <run_depend>gazebo_ros</run_depend>
+
+</package>
