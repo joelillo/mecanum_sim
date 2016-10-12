@@ -7,6 +7,11 @@
 #include <std_msgs/Float32.h>
 #include <iostream>
 
+// These need to be pulled out to parameters...
+const float WHEEL_RAD = 0.1016; // meters
+const float WHEELBASE = 0.466725; // meters
+const float TRACK = 0.2667; // meters
+
 namespace gazebo
 {
   class Mecanum : public ModelPlugin
@@ -37,13 +42,13 @@ namespace gazebo
 
       public: void UpdateChild(const common::UpdateInfo & /*_info*/)
       {
-        // std::cout << mfl << " " << mfr << " " << mbl << " " << mbr << std::endl;
-        float r = 0.1;
-        float l1 = 0.5; // left -> right
-        float l2 = 0.6; // front -> back
+        float r = WHEEL_RAD;
+        float l1 = TRACK; // left -> right
+        float l2 = WHEELBASE; // front -> back
         float l = 1.0/(2*(l1+l2));
         float x = r*(mfl/4.0 + mfr/4.0 + mbl/4.0 + mbr/4.0);
         float y = r*(-mfl/4.0 + mfr/4.0 + mbl/4.0 - mbr/4.0);
+        
         float rot = r*(-l*mfl + l*mfr - l*mbl + l*mbr);
         math::Pose pose = this->model->GetWorldPose();
         float yaw = pose.rot.GetYaw();
