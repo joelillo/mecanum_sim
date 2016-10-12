@@ -6,7 +6,7 @@
   <xacro:include filename="$(find mecanum_sim)/urdf/mecanum.gazebo" />
 
   <xacro:property name="base_width" value="0.3683" />   <!-- 14.5 in -->
-  <xacro:property name="base_length" value="0.5461" />  <!-- 21.5 in -->
+  <xacro:property name="base_length" value="0.549275" />  <!-- 21 5/8 in -->
   <xacro:property name="base_height" value="0.0635" />   <!-- 2.5 in  -->
   <xacro:property name="wheel_radius" value="0.1016" /> <!-- 4.0 in  -->
   <xacro:property name="wheel_width" value="0.0762" />  <!-- 3.0 in  -->
